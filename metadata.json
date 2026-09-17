@@ -1,0 +1,6 @@
+{
+  "name": "Telegram Media Engine",
+  "description": "A robust, headless Telegram Userbot and Backend Media Processing system that extracts and downloads media URLs from chats.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
