@@ -1,6 +1,7 @@
 {
-  "name": "Telegram Media Engine",
-  "description": "A robust, headless Telegram Userbot and Backend Media Processing system that extracts and downloads media URLs from chats.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "name": "Prompt Loudspeaker",
+  "description": "Instantly read and broadcast the contents of your prompt.txt file at maximum volume.",
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
