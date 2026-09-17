@@ -23,7 +23,18 @@ The system relies on external binaries for robust media handling. Ensure the fol
 *   **yt-dlp**: For resolving and downloading from hundreds of supported sites.
 *   **Python 3**: Often required by external extraction tools.
 
-### Installing Dependencies (Linux/Debian)
+### Automated Setup (Termux PRoot / Ubuntu / Debian)
+
+If you are running on Termux (with an Ubuntu PRoot distro) or any Debian-based Linux, you can run the automated setup script to install all OS dependencies, Playwright browsers, and configure the project.
+
+\`\`\`bash
+chmod +x setup.sh
+./setup.sh
+\`\`\`
+
+If you use the automated setup, you can skip to **Step 3 (Environment Configuration)** below.
+
+### Manual Installation (Linux/Debian)
 
 \`\`\`bash
 sudo apt-get update
