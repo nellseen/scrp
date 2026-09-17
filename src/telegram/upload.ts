@@ -4,7 +4,6 @@ import { getTelegramClient } from "./userbot.js";
 import { env } from "../config/env.js";
 import { logger } from "../utils/logger.js";
 import fs from "fs";
-import { CustomFile } from "telegram/client/uploads.js";
 
 export async function uploadMedia(task: Task, processedData: ProcessedData) {
   const client = getTelegramClient();
@@ -13,34 +12,27 @@ export async function uploadMedia(task: Task, processedData: ProcessedData) {
     throw new Error("Telegram client is not connected");
   }
   
-  const targetChat = env.TARGET_CHANNEL_ID || task.chatId;
+  let targetChat: string | number = env.TARGET_CHANNEL_ID || task.chatId!;
   if (!targetChat) {
     throw new Error("No configured target channel or chat ID to upload to");
   }
 
-  const fileStats = fs.statSync(processedData.filePath);
-  
-  const toUpload = new CustomFile(
-    processedData.filePath.split("/").pop() || "media.mp4",
-    fileStats.size,
-    processedData.filePath
-  );
-
-  let thumbFile: CustomFile | undefined = undefined;
-  if (processedData.thumbnailPath && fs.existsSync(processedData.thumbnailPath)) {
-    const thumbStats = fs.statSync(processedData.thumbnailPath);
-    thumbFile = new CustomFile(
-      "thumb.jpg",
-      thumbStats.size,
-      processedData.thumbnailPath
-    );
+  // Ensure targetChat is a number if it's a numeric string (like channel IDs -100xxx)
+  if (typeof targetChat === "string" && /^-?\d+$/.test(targetChat)) {
+    // GramJS prefers bigints or numbers for IDs
+    targetChat = Number(targetChat);
   }
 
   logger.info({ taskId: task.taskId, targetChat }, "Uploading media to target channel");
 
+  let thumbPath: string | undefined = undefined;
+  if (processedData.thumbnailPath && fs.existsSync(processedData.thumbnailPath)) {
+    thumbPath = processedData.thumbnailPath;
+  }
+
   await client.sendFile(targetChat, {
-    file: toUpload,
-    thumb: thumbFile,
+    file: processedData.filePath,
+    thumb: thumbPath,
     caption: `Here is your media.\nURL: ${task.normalizedUrl}`,
     replyTo: targetChat === task.chatId ? task.replyToMessageId : undefined,
     progressCallback: (progress: number) => {
